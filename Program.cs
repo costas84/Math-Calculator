@@ -106,7 +106,8 @@ void division(string message)
 
     Console.WriteLine($"Your result is : {num1} / {num2} = " + (num1 / num2));
     score++;
-    AddToHistory(score, "Division");
+    int result = num1 / num2;
+    AddToHistory(score, "division", result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
@@ -129,7 +130,8 @@ void multiplication(string message)
 
     Console.WriteLine($"Your result is : {num1} * {num2} = " + (num1 * num2));
     score++;
-    AddToHistory(score, "Multiplication");
+    int result = num1 * num2;
+    AddToHistory(score, "Multiplication", result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
@@ -149,7 +151,8 @@ void subtraction(string message)
 
     Console.WriteLine($"Your result is : {num1} - {num2} = " + (num1 - num2));
     score++;
-    AddToHistory(score, "Subtraction");
+    int result = num1 - num2;
+    AddToHistory(score, "subtraction", result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
@@ -169,13 +172,14 @@ void addition(string message)
 
     Console.WriteLine($"Your result is : {num1} + {num2} = " + (num1 + num2));
     score++;
-    AddToHistory(score, "Addition");
+    int result = num1 + num2;
+    AddToHistory(score, "addition", result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
 
-void AddToHistory(int calculationscore, string calculationType)
+void AddToHistory(int calculationscore, string calculationType, int calcresult)
 {
-    calculations.Add($"{DateTime.Now} - {calculationType}: {calculationscore} x times");
+    calculations.Add($"{DateTime.Now} - {calculationType}: {calculationscore} x times - result: {calcresult}");
 }
 
