@@ -76,8 +76,18 @@ void GetCalc()
         Console.WriteLine(calculation);
     }
     Console.WriteLine("---------------------------\n");
-    Console.WriteLine("Press any key to return to Main Menu");
-    Console.ReadLine();
+    Console.WriteLine("Press any key to return to Main Menu , X to clear history");
+    var OptSelected = Console.ReadLine();
+    switch (OptSelected.Trim().ToLower())
+    {
+        case "x":
+            calculations.Clear();
+            break;
+        default:
+            Console.WriteLine("Invalid Input");
+            break;
+            Console.ReadLine();
+    }
 }
 
 void division(string message)
