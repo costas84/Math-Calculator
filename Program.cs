@@ -4,6 +4,8 @@ var date = DateTime.UtcNow;
 
 var calculations = new List<string>();
 
+var memo = new List<string>();
+
 string name = GetName();
 
 Menu(name);
@@ -24,11 +26,12 @@ void Menu(string name)
     {
         Console.Clear();
         Console.WriteLine("---------------------------------------------");
-        Console.WriteLine($"Hello {name}. It's {date}. This is your math's calculation. That's great that you're working on improving yourself");
+        Console.WriteLine($"Hello {name}. It's {date}. This is a calculator.");
         Console.WriteLine("\n");
         Console.WriteLine(@$"
 What calculation would you like to do? Choose from the options below:
 V - View history
+E - Memory
 A - Addition
 S - Subtraction
 M - Multiplication
@@ -40,6 +43,9 @@ Q - Quit the program");
 
         switch (CalcSelected.Trim().ToLower())
         {
+            case "e":
+                Memory();
+                break;
             case "v":
                 GetCalc();
                 break;
@@ -71,18 +77,20 @@ void GetCalc()
     Console.Clear();
     Console.WriteLine("Calculations History");
     Console.WriteLine("---------------------------");
-    foreach (var calculation in calculations)
+    for (int i = 0; i < calculations.Count; i++)
     {
-        Console.WriteLine(calculation);
+        var calculation = calculations[i];
+        Console.WriteLine($"{i + 1}] {calculation}");
     }
     Console.WriteLine("---------------------------\n");
-    Console.WriteLine("Press any key to return to Main Menu , X to clear history");
+    Console.WriteLine("Press any key to return to Main Menu , X to clear history, or type which result you want to continue working with");
     var OptSelected = Console.ReadLine();
     switch (OptSelected.Trim().ToLower())
     {
         case "x":
             calculations.Clear();
             break;
+        case "result":
         default:
             Console.WriteLine("Invalid Input");
             break;
@@ -174,12 +182,49 @@ void addition(string message)
     score++;
     int result = num1 + num2;
     AddToHistory(score, "addition", result);
+    AddToMemory(result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
 
-void AddToHistory(int calculationscore, string calculationType, int calcresult)
+void AddToHistory(int score, string calculationType, int calcresult)
 {
-    calculations.Add($"{DateTime.Now} - {calculationType}: {calculationscore} x times - result: {calcresult}");
+    calculations.Add($"{DateTime.UtcNow} - {calculationType}: used {score} times - result: {calcresult}");  
 }
 
+void Memory()
+
+{
+    Console.Clear();
+    Console.WriteLine("Memory");
+    Console.WriteLine("---------------------------");
+    for (int i = 0; i < memo.Count; i++)
+    {
+        var memory = memo[i];
+        Console.WriteLine($"{i + 1}] {memory}");
+    }
+    int memresult;
+    Console.WriteLine("---------------------------\n");
+    Console.WriteLine("Type which result you want to continue calculations with and then press Enter");
+    int memselected = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Type another number, and then press Enter");
+    int secondNumber = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("Enter the operation + (addition), - (subtraction), * (multiplication), / (division), ^ (exponent), or % (modulus): ");
+    string stringOperation = Console.ReadLine();
+    switch (stringOperation)
+    {
+        case "+":
+        case "addition":
+            memresult =  memselected + secondNumber;
+            Console.WriteLine(memselected + " + " + secondNumber + " = " + memresult);
+            break;
+    }
+
+
+    
+}
+
+void AddToMemory(int calcresult)
+{
+    memo.Add($"result: {calcresult}");
+}
