@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.Formats.Asn1.AsnWriter;
 
 var date = DateTime.UtcNow;
 
@@ -83,14 +84,13 @@ void GetCalc()
         Console.WriteLine($"{i + 1}] {calculation}");
     }
     Console.WriteLine("---------------------------\n");
-    Console.WriteLine("Press any key to return to Main Menu , X to clear history, or type which result you want to continue working with");
+    Console.WriteLine("Press any key to return to Main Menu , X to clear history");
     var OptSelected = Console.ReadLine();
     switch (OptSelected.Trim().ToLower())
     {
         case "x":
             calculations.Clear();
             break;
-        case "result":
         default:
             Console.WriteLine("Invalid Input");
             break;
@@ -192,6 +192,13 @@ void AddToHistory(int score, string calculationType, int calcresult)
     calculations.Add($"{DateTime.UtcNow} - {calculationType}: used {score} times - result: {calcresult}");  
 }
 
+
+
+void AddToMemory(int calcresult)
+{
+    memo.Add($"result: {calcresult}");
+}
+
 void Memory()
 
 {
@@ -203,28 +210,29 @@ void Memory()
         var memory = memo[i];
         Console.WriteLine($"{i + 1}] {memory}");
     }
-    int memresult;
     Console.WriteLine("---------------------------\n");
-    Console.WriteLine("Type which result you want to continue calculations with and then press Enter");
-    int memselected = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine("Type another number, and then press Enter");
-    int secondNumber = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine("Enter the operation + (addition), - (subtraction), * (multiplication), / (division), ^ (exponent), or % (modulus): ");
-    string stringOperation = Console.ReadLine();
-    switch (stringOperation)
+
+    var isMemOn = true;
+    do
     {
-        case "+":
-        case "addition":
-            memresult =  memselected + secondNumber;
-            Console.WriteLine(memselected + " + " + secondNumber + " = " + memresult);
-            break;
-    }
+        Console.WriteLine("Type which result you want to continue calculations with and then press Enter, or X to leave");
+        int memselected = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter second number:");
+        int secondNumber = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Enter symbol(/,+,-,*):");
+        string symbol = Console.ReadLine();
+        int memresult;
 
-
-    
-}
-
-void AddToMemory(int calcresult)
-{
-    memo.Add($"result: {calcresult}");
+        switch (symbol)
+        {
+            case "+":
+                memresult = memselected + secondNumber;
+                Console.WriteLine("Addition:" + memresult);
+                break;
+            default:
+                Console.WriteLine("Invalid Input");
+                break;
+                Console.ReadLine(); ;
+        }
+    } while (isMemOn);
 }
