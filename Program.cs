@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using static System.Formats.Asn1.AsnWriter;
+
 
 var date = DateTime.UtcNow;
 
@@ -15,6 +17,11 @@ string GetName()
 {
     Console.WriteLine("Please type your name");
     var name = Console.ReadLine();
+    while (string.IsNullOrEmpty(name))
+    {
+        Console.WriteLine("Please enter a valid name");
+        name = Console.ReadLine();
+    }
     return name;
 }
 
@@ -78,7 +85,7 @@ void GetCalc()
     Console.Clear();
     Console.WriteLine("Calculations History");
     Console.WriteLine("---------------------------");
-    for (int i = 0; i < calculations.Count; i++)
+    for (int i = 0; i < calculations.Count; i++)  //counter for elements in history list
     {
         var calculation = calculations[i];
         Console.WriteLine($"{i + 1}] {calculation}");
@@ -101,21 +108,26 @@ void GetCalc()
 void division(string message)
 
 {
-    int num1;
-    int num2;
-    var score = 0;
+    double num1;
+    double num2;
     // Ask the user to type the first number.
     Console.WriteLine("Type a number, and then press Enter");
-    num1 = Convert.ToInt32(Console.ReadLine());
+    num1 = Convert.ToDouble(Console.ReadLine());
 
     // Ask the user to type the second number.
     Console.WriteLine("Type another number, and then press Enter");
-    num2 = Convert.ToInt32(Console.ReadLine());
+    num2 = Convert.ToDouble(Console.ReadLine());
+
+    while (num2 == 0)
+    {
+        Console.WriteLine("Enter a non-zero divisor:");
+        num2 = Convert.ToDouble(Console.ReadLine());
+    }
 
     Console.WriteLine($"Your result is : {num1} / {num2} = " + (num1 / num2));
-    score++;
-    int result = num1 / num2;
-    AddToHistory(score, "division", result);
+    double result = num1 / num2;
+    AddToHistory("division", result);
+    AddToMemory(result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
@@ -125,76 +137,83 @@ void division(string message)
 
 void multiplication(string message)
 {
-    int num1;
-    int num2;
-    var score = 0;
+    double num1;
+    double num2;
     // Ask the user to type the first number.
     Console.WriteLine("Type a number, and then press Enter");
-    num1 = Convert.ToInt32(Console.ReadLine());
+    var Num1AsString = Console.ReadLine();
+    bool parsesuccess = Double.TryParse(Num1AsString, out num1);
+    while (parsesuccess)
+    
+        num1 = Convert.ToDouble(Console.ReadLine());
 
-    // Ask the user to type the second number.
-    Console.WriteLine("Type another number, and then press Enter");
-    num2 = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine($"Your result is : {num1} * {num2} = " + (num1 * num2));
-    score++;
-    int result = num1 * num2;
-    AddToHistory(score, "Multiplication", result);
-    Console.Write("Press any key to go back to main menu...");
-    Console.ReadKey();
-}
+        // Ask the user to type the second number.
+        Console.WriteLine("Type another number, and then press Enter");
+        num2 = Convert.ToDouble(Console.ReadLine());
+        Console.WriteLine($"Your result is : {num1} * {num2} = " + (num1 * num2));
+        double result = num1 * num2;
+        AddToHistory("Multiplication", result);
+        AddToMemory(result);
+        Console.Write("Press any key to go back to main menu...");
+        Console.ReadKey();
+    } 
+    
+
+     
+
+
 
 void subtraction(string message)
 {
-    int num1;
-    int num2;
-    var score = 0;
+    double num1;
+    double num2;
     // Ask the user to type the first number.
     Console.WriteLine("Type a number, and then press Enter");
-    num1 = Convert.ToInt32(Console.ReadLine());
+    num1 = Convert.ToDouble(Console.ReadLine());
 
     // Ask the user to type the second number.
     Console.WriteLine("Type another number, and then press Enter");
-    num2 = Convert.ToInt32(Console.ReadLine());
+    num2 = Convert.ToDouble(Console.ReadLine());
 
     Console.WriteLine($"Your result is : {num1} - {num2} = " + (num1 - num2));
-    score++;
-    int result = num1 - num2;
-    AddToHistory(score, "subtraction", result);
+    double result = num1 - num2;
+    AddToHistory("subtraction", result);
+    AddToMemory(result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
 
 void addition(string message)
 {
-    int num1;
-    int num2;
-    var score = 0;
+    double num1;
+    double num2;
+
     // Ask the user to type the first number.
     Console.WriteLine("Type a number, and then press Enter");
-    num1 = Convert.ToInt32(Console.ReadLine());
+    num1 = Convert.ToDouble(Console.ReadLine());
 
     // Ask the user to type the second number.
     Console.WriteLine("Type another number, and then press Enter");
-    num2 = Convert.ToInt32(Console.ReadLine());
+    num2 = Convert.ToDouble(Console.ReadLine());
 
     Console.WriteLine($"Your result is : {num1} + {num2} = " + (num1 + num2));
-    score++;
-    int result = num1 + num2;
-    AddToHistory(score, "addition", result);
+
+    double result = num1 + num2;
+    AddToHistory("addition", result);
     AddToMemory(result);
     Console.Write("Press any key to go back to main menu...");
     Console.ReadKey();
 }
 
-void AddToHistory(int score, string calculationType, int calcresult)
+void AddToHistory(string calculationType, double calcresult)
 {
-    calculations.Add($"{DateTime.UtcNow} - {calculationType}: used {score} times - result: {calcresult}");  
+    calculations.Add($"{DateTime.UtcNow} - {calculationType}: - result: {calcresult}");
 }
 
 
 
-void AddToMemory(int calcresult)
+void AddToMemory(double calcresult)
 {
     memo.Add($"result: {calcresult}");
 }
@@ -205,34 +224,76 @@ void Memory()
     Console.Clear();
     Console.WriteLine("Memory");
     Console.WriteLine("---------------------------");
-    for (int i = 0; i < memo.Count; i++)
+   
+    for (int i = 0; i < memo.Count; i++)  //counter for elements in memory list
     {
         var memory = memo[i];
         Console.WriteLine($"{i + 1}] {memory}");
-    }
+      }
     Console.WriteLine("---------------------------\n");
-
     var isMemOn = true;
+    double memselectedone;
+    double secondNumber;
+    string symbol;
+
     do
     {
-        Console.WriteLine("Type which result you want to continue calculations with and then press Enter, or X to leave");
-        int memselected = Convert.ToInt32(Console.ReadLine());
+        // asking user to choose which calculation to continue
+        
+        Console.WriteLine("Type which result you want to continue calculations with and then press Enter");  
+        memselectedone = Convert.ToDouble(Console.ReadLine());
         Console.Write("Enter second number:");
-        int secondNumber = Convert.ToInt32(Console.ReadLine());
-        Console.Write("Enter symbol(/,+,-,*):");
-        string symbol = Console.ReadLine();
-        int memresult;
+        secondNumber = Convert.ToDouble(Console.ReadLine());
+         
+        //ask user what calculation to perform, or to exit to the menu
+
+        Console.Write("Enter symbol(/,+,-,*) for calculation or q for exit:");
+        symbol = Console.ReadLine();
+
 
         switch (symbol)
         {
             case "+":
-                memresult = memselected + secondNumber;
-                Console.WriteLine("Addition:" + memresult);
+                double MemResAdd = memselectedone + secondNumber;
+                Console.WriteLine("Addition:" + MemResAdd);
+                AddToHistory("addition", MemResAdd);
+                AddToMemory(MemResAdd);
                 break;
+            case "-":
+                double MemResSub = memselectedone - secondNumber;
+                Console.WriteLine("Subtraction:" + MemResSub);
+                AddToHistory("Subtraction", MemResSub);
+                AddToMemory(MemResSub);
+                break;
+            case "*":
+                double MemResMult = memselectedone * secondNumber;
+                Console.WriteLine("Multiplication:" + MemResMult);
+                AddToHistory("Multiplication", MemResMult);
+                AddToMemory(MemResMult);
+                break;
+            case "/":
+                double MemResDiv = memselectedone / secondNumber;
+                while (secondNumber == 0)
+                {
+                    Console.WriteLine("Enter a non-zero divisor:");
+                    secondNumber = Convert.ToDouble(Console.ReadLine());
+                }
+                Console.WriteLine("Division:" + MemResDiv);
+                AddToHistory("Division", MemResDiv);
+                AddToMemory(MemResDiv);
+                break;
+            case "q":
+                return;
+                
             default:
                 Console.WriteLine("Invalid Input");
                 break;
                 Console.ReadLine(); ;
         }
     } while (isMemOn);
-}
+   }
+
+
+
+
+
