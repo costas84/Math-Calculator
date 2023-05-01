@@ -60,8 +60,7 @@
 
             Console.WriteLine("---------------------------\n");
             var isMemOn = true;
-            double memselectedone;
-            double secondNumber;
+            
             string symbol;
 
             do
@@ -116,7 +115,7 @@
                         while (num2 == 0)
                         {
                             Console.WriteLine("Enter a non-zero divisor:");
-                            secondNumber = Convert.ToDouble(Console.ReadLine());
+                            num2 = Convert.ToDouble(Console.ReadLine());
                         }
                         Console.WriteLine("Division:" + MemResDiv);
                         AddToHistory("Division", MemResDiv);
