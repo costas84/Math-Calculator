@@ -3,7 +3,7 @@
     internal class Menu
     {
         CalcEngine engine = new();
-
+        
         internal void ShowMenu(string name, DateTime date)
         {
 
@@ -15,6 +15,7 @@
 
             do
             {
+                Console.Clear();
                 Console.WriteLine(@$"
 What calculation would you like to do? Choose from the options below:
 V - View history

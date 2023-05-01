@@ -1,12 +1,23 @@
 ﻿namespace Math_Calculator
 {
     public class Helpers
+    
     {
+
         static List<string> calculations;
         static List<string> memo;
+        internal static void AddToHistory(string calculationType, double calcresult)
+        {
+            calculations.Add($"{DateTime.UtcNow} - {calculationType}: - result: {calcresult}");
+        }
+        internal static void AddToMemory(double calcresult)
+        {
+            memo.Add($"result: {calcresult}");
+        }
 
-        public static void GetCalc()
-       
+
+        internal static void GetCalc()
+
         {
 
             Console.Clear();
@@ -17,6 +28,8 @@
                 var calculation = calculations[i];
                 Console.WriteLine($"{i + 1}] {calculation}");
             }
+
+
             Console.WriteLine("---------------------------\n");
             Console.WriteLine("Press any key to return to Main Menu , X to clear history");
             var OptSelected = Console.ReadLine();
@@ -31,26 +44,20 @@
                     Console.ReadLine();
             }
         }
-        public static void AddToHistory(string calculationType, double calcresult)
-        {
-            calculations.Add($"{DateTime.UtcNow} - {calculationType}: - result: {calcresult}");
-        }
-        public static void AddToMemory(double calcresult)
-        {
-            memo.Add($"result: {calcresult}");
-        }
-        public static void Memory()
+
+
+        internal static void Memory()
 
         {
             Console.Clear();
             Console.WriteLine("Memory");
             Console.WriteLine("---------------------------");
-
             for (int i = 0; i < memo.Count; i++)  //counter for elements in memory list
             {
                 var memory = memo[i];
                 Console.WriteLine($"{i + 1}] {memory}");
             }
+
             Console.WriteLine("---------------------------\n");
             var isMemOn = true;
             double memselectedone;
@@ -114,15 +121,16 @@
             } while (isMemOn);
         }
 
-        public static string? ValidateResult(string result)
+        internal static string ValidateResult(string num1)
+
         {
-            while (string.IsNullOrEmpty(result) || !Double.TryParse(result, out _))
+            while (string.IsNullOrEmpty(num1) || !Double.TryParse(num1, out _))
             {
                 Console.WriteLine("not a number, please try again");
-                result = (Console.ReadLine());
+                num1 = (Console.ReadLine());
             }
-            return result;
-        }
+            return num1;
+        } //it is not currently in use
 
     }
 }
