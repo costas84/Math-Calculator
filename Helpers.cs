@@ -67,11 +67,23 @@
             do
             {
                 // asking user to choose which calculation to continue
-
+                double num1;
+                double num2;
                 Console.WriteLine("Type which result you want to continue calculations with and then press Enter");
-                memselectedone = Convert.ToDouble(Console.ReadLine());
+                var result = Console.ReadLine();
+                while (string.IsNullOrEmpty(result) || !Double.TryParse(result, out num1))
+                {
+                    Console.WriteLine("not a number, please try again");
+                    result = (Console.ReadLine());
+                }
+
                 Console.Write("Enter second number:");
-                secondNumber = Convert.ToDouble(Console.ReadLine());
+                var result2 = Console.ReadLine();
+                while (string.IsNullOrEmpty(result2) || !Double.TryParse(result2, out num2))
+                {
+                    Console.WriteLine("not a number, please try again");
+                    result2 = (Console.ReadLine());
+                }
 
                 //ask user what calculation to perform, or to exit to the menu
 
@@ -82,26 +94,26 @@
                 switch (symbol)
                 {
                     case "+":
-                        double MemResAdd = memselectedone + secondNumber;
+                        double MemResAdd = num1 + num2;
                         Console.WriteLine("Addition:" + MemResAdd);
                         AddToHistory("addition", MemResAdd);
                         AddToMemory(MemResAdd);
                         break;
                     case "-":
-                        double MemResSub = memselectedone - secondNumber;
+                        double MemResSub = num1 - num2;
                         Console.WriteLine("Subtraction:" + MemResSub);
                         AddToHistory("Subtraction", MemResSub);
                         AddToMemory(MemResSub);
                         break;
                     case "*":
-                        double MemResMult = memselectedone * secondNumber;
+                        double MemResMult = num1 * num2;
                         Console.WriteLine("Multiplication:" + MemResMult);
                         AddToHistory("Multiplication", MemResMult);
                         AddToMemory(MemResMult);
                         break;
                     case "/":
-                        double MemResDiv = memselectedone / secondNumber;
-                        while (secondNumber == 0)
+                        double MemResDiv = num1 / num2;
+                        while (num2 == 0)
                         {
                             Console.WriteLine("Enter a non-zero divisor:");
                             secondNumber = Convert.ToDouble(Console.ReadLine());
